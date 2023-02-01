@@ -76,14 +76,48 @@ export class AppComponent {
 
   public onDrop2(event: any) {
     console.log('onDrop event---', event);
-    let dataTransfer = event.dataTransfer.getData('data');
+    const dataTransfer = event.dataTransfer.getData('data');
+    const targetData = event.target.title;
     console.log('onDrop data---', dataTransfer);
 
     event.view.PDFViewerApplication.appConfig.viewerContainer
       .querySelectorAll('.pls-highlight')
       .forEach((e: any) => e.remove());
 
-    this.currentHighlights = this.currentHighlights;
+    const transferedHighlight = this.currentHighlights.find(
+      (x) => x.value === dataTransfer
+    ) as Highlight;
+    const transferedHighlightIndex = this.currentHighlights.findIndex(
+      (x) => x.value === dataTransfer
+    );
+    let targetHighlight = this.currentHighlights.find(
+      (x) => x.value === targetData
+    ) as Highlight;
+
+    const left = Math.min(
+      transferedHighlight?.coordinates[0],
+      targetHighlight?.coordinates[0]
+    );
+    const top = Math.min(
+      transferedHighlight.coordinates[1],
+      targetHighlight.coordinates[1]
+    );
+    const right = Math.max(
+      transferedHighlight.coordinates[2],
+      targetHighlight.coordinates[2]
+    );
+    const bottom = Math.max(
+      transferedHighlight.coordinates[3],
+      targetHighlight.coordinates[3]
+    );
+
+    targetHighlight = {
+      value: `${dataTransfer} ${targetData}`,
+      coordinates: [left, top, right, bottom],
+    };
+
+    this.currentHighlights.splice(transferedHighlightIndex, 1);
+    this.currentHighlights[transferedHighlightIndex] = targetHighlight;
 
     // const newCoodrinates = [
     //   {
@@ -259,7 +293,7 @@ export class AppComponent {
         // btn.style.cursor = 'pointer';
       });
       el.addEventListener('dragstart', this.onDragStart);
-      // el.addEventListener('drop', this.onDrop2.bind(this));
+      el.addEventListener('drop', this.onDrop2.bind(this));
       el.addEventListener('dragover', this.allowDrop);
 
       // btn.addEventListener('click', this.onAddTag.bind(this, el.title));
