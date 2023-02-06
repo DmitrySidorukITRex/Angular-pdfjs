@@ -1,17 +1,8 @@
 import { Injectable } from '@angular/core';
-
-export interface ServerText {
-  word: string;
-  geo: number[][];
-}
-
-export interface Highlight {
-  value: string;
-  coordinates: number[];
-}
+import { Highlight, ServerText } from '../feature/document-viewer.interface';
 
 @Injectable()
-export class AppHelper {
+export class DocumentViewerDataService {
   public getPixelsHighlights(
     serverTextList: ServerText[],
     width: number,
@@ -20,9 +11,6 @@ export class AppHelper {
     if (!serverTextList) return [];
 
     let arr: Highlight[] = [];
-
-    // width = 1700;
-    // height = 2200;
 
     serverTextList.forEach((item) => {
       const coord = item.geo;
@@ -37,20 +25,6 @@ export class AppHelper {
       };
       arr.push(clientCoordinate);
     });
-
-    // for (let value in serverCoordinates) {
-    //   const coord = serverCoordinates[value];
-    //   const left = coord[0][0] * width;
-    //   const top = coord[0][1] * height;
-    //   const right = coord[1][0] * width;
-    //   const bottom = coord[1][1] * height;
-
-    //   const clientCoordinate = {
-    //     value,
-    //     coordinates: [left, top, right, bottom],
-    //   };
-    //   arr.push(clientCoordinate);
-    // }
 
     return arr;
   }

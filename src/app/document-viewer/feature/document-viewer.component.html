@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <div class="left-side">
+    <div class="title" (drop)="onDrop($event)" (dragover)="allowDrop($event)">
+      <input type="text" />
+      <input type="text" />
+    </div>
+  </div>
+  <div class="right-side">
+    <ng2-pdfjs-viewer
+      pdfSrc="https://storage.googleapis.com/dev-attachment/14112022_16:35:15_1/attachment_1.pdf"
+      viewerId="MyUniqueID"
+      (onDocumentLoad)="testPagesLoaded($event)"
+      #PdfJsViewerComponent
+    ></ng2-pdfjs-viewer>
+  </div>
+</div>
