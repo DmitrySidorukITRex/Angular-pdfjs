@@ -21,6 +21,9 @@ export class AppHelper {
 
     let arr: Highlight[] = [];
 
+    // width = 1700;
+    // height = 2200;
+
     serverTextList.forEach((item) => {
       const coord = item.geo;
       const left = coord[0][0] * width;
